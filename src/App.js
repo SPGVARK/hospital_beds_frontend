@@ -47,7 +47,7 @@ function App()
       "Vellore",
       "Virudhunagar"
     ]
-    const {Data:hospital,SetData:setHospital} = useFetch('http://localhost:5000/api/beds');
+    const {Data:hospital,SetData:setHospital} = useFetch('https://spgvark-pandemic.herokuapp.com/api/beds');
     const [city_selected,setCity] = useState('');
     const [search,setSearch] = useState(null);
     const [ListConut,setListCount] = useState(20);
