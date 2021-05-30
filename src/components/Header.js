@@ -5,10 +5,10 @@ export default function Hedaer(props){
     <section id="header">
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <a className="navbar-brand">
-        <img src={logo} alt="" height="55" width="55"/>
+        <img src={logo} alt="" height="35" width="35"/>
         </a>
 
-        <h3 className="nav-text">HOSPITAL BEDS AVAILABILITY</h3>
+        <center><h3 style={{color:'white',fontSize:'calc(12px + 0.6vw',padding:'20px', margin:'0px 20px'}}>HOSPITAL BEDS AVAILABILITY</h3></center>
 
       <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon"></span>
@@ -17,11 +17,9 @@ export default function Hedaer(props){
         <ul className="navbar-nav">
 
 
-          <div className="input-group rounded">
-            <input type="search" className="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" onInput={props.HandleSearch} />
-            <span className="input-group-text border-0" id="search-addon">
-              <i className="fas fa-search"></i>
-            </span>
+          <div className="input-group" style={{textAlign:'center',alignItems:'center'}}>
+            <input type="search" className="form-control" placeholder="Search" aria-label="Search" aria-describedby="search-addon" onInput={props.HandleSearch} style={{outline:'none',border:'0px',background:'#f5f5f5',color:'gray',width:'calc(350px + 0.5vw)'}} />
+            
           </div>
 
         </ul>

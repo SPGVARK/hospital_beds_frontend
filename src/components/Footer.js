@@ -1,4 +1,4 @@
-import Reatc from 'react'
+import React from 'react'
 import facebook from '../images/facebook.png'
 import whatsapp from '../images/whatsapp.png'
 import instagram from '../images/instagram.png'
