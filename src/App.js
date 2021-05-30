@@ -151,7 +151,7 @@ function App()
     <Header HandleSearch={HandleSearch}/>
   
   <section id="data">
-    <h2 style={{color:'white',background:'#ef5350',width:'100%',padding:'5px 10px',fontSize:'calc(7px + 0.5vw)',borderRadius:'20px',textAlign:'center'}}>Data may be delayed or partial. Please verify with the hospital.</h2>
+    <h2 style={{color:'white',background:'#ef5350',width:'100%',padding:'5px 10px',fontSize:'calc(7px + 0.5vw)',borderRadius:'20px',textAlign:'center'}}>Data in the website may be delayed or partial. Please verify with the hospital before any serious decision.</h2>
     <div className="border-all">
 
         {search&&<div className="dropdown">
