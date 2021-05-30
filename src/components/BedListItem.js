@@ -1,5 +1,9 @@
 import React from 'react'
  export default function BedItemList(props){
+   var contact  = ""
+   if(props.contact&&props.contact.length>=10){
+     contact = (props.contact.includes('+91'))?props.contact.replace('+91','').trim():props.contact.trim();
+   }
    if(props.address)
    {
     var address = "";
@@ -79,7 +83,7 @@ import React from 'react'
           </span>
           <span style={{flex:'2'}}>
             {
-              (props.contact)? <button type="button" className="btn btn-success">{ props.contact}</button>:<span style= {{background:'inherit'}}>          </span>
+              (contact)? <a href={`tel:+91${contact}`} type="button" className="btn btn-success">{contact}</a>:<span style= {{background:'inherit'}}>          </span>
             }
           </span>
         </span>
