@@ -1,3 +1,4 @@
+ // eslint-disable-next-line
 import React from 'react'
 import {useState,useEffect} from 'react'
 import BedListItem from './components/BedListItem'
@@ -50,6 +51,7 @@ function App()
     const {Data:hospital,SetData:setHospital} = useFetch('https://spgvark-pandemic.herokuapp.com/api/beds');
     const [city_selected,setCity] = useState('');
     const [search,setSearch] = useState(null);
+    const [query,setQuery] = useState('')
     const [ListConut,setListCount] = useState(20);
   //</UseState>
  
@@ -62,15 +64,45 @@ function App()
     {
       if(search)
       {
-        
-        var hos = hospital.filter((el)=>
+        var hos = hospital;
+       // console.log("Query : "+ query)
+        if(query)
         {
-          setListCount(20)
-            return  el.city.toLowerCase().includes(city_selected.toLowerCase())
-        })
-        setSearch(hos); 
+          hos = hos.filter((el)=>
+          {
+            return  el.city.toLowerCase().includes(query.toLowerCase()) || el.hospital.toLowerCase().includes(query.toLowerCase()) 
+          });
+        }
+          hos = hos.filter((el)=>
+          {
+            setListCount(20)
+              return  el.city.toLowerCase().includes(city_selected.toLowerCase())
+          })
+          setSearch(hos); 
       }
     }, [city_selected])
+    useEffect(() => {
+      var hos = hospital;
+      var val  =query;
+      //console.log("City Selected : "+ city_selected)
+      if(search&&val)
+      {
+        if(city_selected)
+        {
+          hos = hos.filter((el)=>
+          {
+            setListCount(20)
+              return  el.city.toLowerCase().includes(city_selected.toLowerCase())
+          })
+        } 
+        hos = hos.filter((el)=>
+        {
+          return  el.city.toLowerCase().includes(val.toLowerCase()) || el.hospital.toLowerCase().includes(val.toLowerCase()) 
+        })
+        setSearch(hos);
+        setListCount(20);
+      }
+    }, [query])
     useEffect(() => 
     {
      const URL = 'https://ip.nf/me.json';
@@ -78,33 +110,35 @@ function App()
      .then(response => response.json())
      .then(data=> {if(cities.includes(data.ip.city))setCity(data.ip.city)})
     }, [])
-    /*useEffect(() => 
-    {
-     if(hospital)
-     {
-      var item = hospital;
-      if(hospital.length>=ListConut)
-        item = item.slice(0,ListConut)
-      else
-        item = item.slice(0,hospital.length)
-      setSearch(item);
-     }
-    }, [ListConut,hospital])*/
   //</UseEffect>
 
   //<Event Listeners>
-    function HandleSearch(e)
+    /*function HandleSearch(e)
     {
+      var hos = hospital;
       var val  =e.target.value.trim();
+      setQuery(val);
+      //console.log("City Selected : "+ city_selected)
       if(val)
       {
-        var hos = hospital.filter((el)=>
+        if(city_selected)
+        {
+          hos = hos.filter((el)=>
+          {
+            setListCount(20)
+              return  el.city.toLowerCase().includes(city_selected.toLowerCase())
+          })
+        } 
+        hos = hos.filter((el)=>
         {
           return  el.city.toLowerCase().includes(val.toLowerCase()) || el.hospital.toLowerCase().includes(val.toLowerCase()) 
         })
         setSearch(hos);
         setListCount(20);
       }
+    }*/
+    function HandleSearch(e){
+      setQuery(e.target.value)
     }
     function LoadNext()
     {
