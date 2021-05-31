@@ -151,7 +151,7 @@ function App()
     <Header HandleSearch={HandleSearch}/>
   
   <section id="data">
-    <h2 style={{color:'white',background:'#ef5350',width:'100%',padding:'5px 10px',fontSize:'calc(7px + 0.5vw)',borderRadius:'20px',textAlign:'center'}}>Data in the website may be delayed or partial. Please verify with the hospital before any serious decision.</h2>
+    <h2 style={{color:'white',background:'#ef5350',width:'100%',padding:'5px 10px',fontSize:'calc(7px + 0.5vw)',borderRadius:'20px',textAlign:'center'}}>Data in the website may be delayed or partial. Please verify with the hospital before any decision.</h2>
     <div className="border-all">
 
         {search&&<div className="dropdown">
@@ -170,7 +170,7 @@ function App()
             </div>
           </div>}
               
-    {(!search)?<center><h5>LOADING......</h5><div className="loader"></div></center>:'' }
+    {(!search)?<center><h5 className="loading">LOADING......</h5><div className="loader"></div></center>:'' }
     {search && (search.length == 0)?<center><h5>No Results Found</h5></center>:''}
     {search && search.slice(0,ListConut).map((e)=>
     {
