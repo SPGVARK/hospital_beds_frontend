@@ -122,6 +122,13 @@ body{
 .navbar-brand{
     margin-left: 15px;
 }
+.selected{
+  background-color: white;
+  color: gray;
+}
+.btn-secondary:hover{
+  background-color: white;
+}
 @media (max-width: 1028px)
 {
     .input-group{
