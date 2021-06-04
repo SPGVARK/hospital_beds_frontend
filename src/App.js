@@ -53,52 +53,39 @@ function App()
     const [search,setSearch] = useState(null);
     const [query,setQuery] = useState('')
     const [ListConut,setListCount] = useState(20);
+    const [sort,setSort] = useState(null);
   //</UseState>
  
   //<UseEffect>
     useEffect(() => 
     {
       setSearch(hospital);
+      setSort(0);
     }, [hospital])
     useEffect(() => 
     {
       if(search)
       {
         var hos = hospital;
-       // console.log("Query : "+ query)
         if(query)
         {
-          hos = hos.filter((el)=>
-          {
-            return  el.city.toLowerCase().includes(query.toLowerCase()) || el.hospital.toLowerCase().includes(query.toLowerCase()) 
-          });
+          hos = hos.filter((el)=> el.city.toLowerCase().includes(query.toLowerCase()) || el.hospital.toLowerCase().includes(query.toLowerCase()) );
         }
-          hos = hos.filter((el)=>
-          {
-            setListCount(20)
-              return  el.city.toLowerCase().includes(city_selected.toLowerCase())
-          })
+          hos = hos.filter((el)=>el.city.toLowerCase().includes(city_selected.toLowerCase()))
           setSearch(hos); 
+          setListCount(20)
       }
     }, [city_selected])
     useEffect(() => {
       var hos = hospital;
-      var val  =query;
-      //console.log("City Selected : "+ city_selected)
-      if(search&&val)
+      var val  = query;
+      if(search)
       {
         if(city_selected)
         {
-          hos = hos.filter((el)=>
-          {
-            setListCount(20)
-              return  el.city.toLowerCase().includes(city_selected.toLowerCase())
-          })
+          hos = hos.filter((el)=>el.city.toLowerCase().includes(city_selected.toLowerCase()))
         } 
-        hos = hos.filter((el)=>
-        {
-          return  el.city.toLowerCase().includes(val.toLowerCase()) || el.hospital.toLowerCase().includes(val.toLowerCase()) 
-        })
+        hos = hos.filter((el)=>el.city.toLowerCase().includes(val.toLowerCase()) || el.hospital.toLowerCase().includes(val.toLowerCase()))
         setSearch(hos);
         setListCount(20);
       }
@@ -110,35 +97,49 @@ function App()
      .then(response => response.json())
      .then(data=> {if(cities.includes(data.ip.city))setCity(data.ip.city)})
     }, [])
+    
+  function Sort(sort)
+  {
+      setSort(sort)
+      var list = search;
+      
+        switch(sort){
+          case 1:
+            list.sort((a,b)=>b.oxy_beds.vaccant - a.oxy_beds.vaccant);
+            break;
+          case 2:
+              list.sort((a,b)=>b.non_oxy_beds.vaccant - a.non_oxy_beds.vaccant);
+              break;
+          case 3:
+              
+              list.sort((a,b)=>{
+                var c = (b.icu_ventilator_beds.vaccant>=0)?b.icu_ventilator_beds.vaccant:0;
+                var d = (a.icu_ventilator_beds.vaccant>=0)?a.icu_ventilator_beds.vaccant:0;
+                return c - d
+              });
+              break;
+          case 4:
+              list.sort((a,b)=>
+              {
+                var c = (b.icu_non_ventilator_beds.vaccant>=0)?b.icu_non_ventilator_beds.vaccant:0;
+                var d = (a.icu_non_ventilator_beds.vaccant>=0)?a.icu_non_ventilator_beds.vaccant:0;
+                return c - d
+              });
+              break;
+        }
+        //console.log(list[0])
+        setSearch(list);
+
+  }
   //</UseEffect>
 
   //<Event Listeners>
-    /*function HandleSearch(e)
-    {
-      var hos = hospital;
-      var val  =e.target.value.trim();
-      setQuery(val);
-      //console.log("City Selected : "+ city_selected)
-      if(val)
-      {
-        if(city_selected)
-        {
-          hos = hos.filter((el)=>
-          {
-            setListCount(20)
-              return  el.city.toLowerCase().includes(city_selected.toLowerCase())
-          })
-        } 
-        hos = hos.filter((el)=>
-        {
-          return  el.city.toLowerCase().includes(val.toLowerCase()) || el.hospital.toLowerCase().includes(val.toLowerCase()) 
-        })
-        setSearch(hos);
-        setListCount(20);
-      }
-    }*/
     function HandleSearch(e){
       setQuery(e.target.value)
+    }
+    function ClearSearch(){
+      document.getElementById('search').value = ''
+      setQuery( '');
     }
     function LoadNext()
     {
@@ -148,13 +149,13 @@ function App()
 
   return (
    <>
-    <Header HandleSearch={HandleSearch}/>
+    <Header HandleSearch={HandleSearch} ClearSearch={ClearSearch}/>
   
   <section id="data">
     <h2 style={{color:'white',background:'#ef5350',width:'100%',padding:'5px 10px',fontSize:'calc(7px + 0.5vw)',borderRadius:'20px',textAlign:'center'}}>Data in the website may be delayed or partial. Please verify with the hospital before any decision.</h2>
     <div className="border-all">
-
-        {search&&<div className="dropdown">
+    <div className="row" style={{background:"#f3f4ed"}}>
+        {search&&<div className="dropdown p-2 col-2" style={{background:'none'}}>
             <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
               {city_selected || 'Select City'}
             </button>
@@ -169,7 +170,13 @@ function App()
               }
             </div>
           </div>}
-              
+         <div className="p-2 col">
+         <button type="button"  className={`rounded-pill m-1 btn btn-secondary  ${(sort===2)?'selected':''}`}   onClick={()=>Sort(2)}>Non-Oxygn</button>
+         <button type="button"  className={`rounded-pill m-1 btn btn-secondary  ${(sort===1)?'selected':''}`}   onClick={()=>Sort(1)}>Oxygen</button>
+         <button type="button"  className={`rounded-pill m-1 btn btn-secondary  ${(sort===3)?'selected':''}`}   onClick={()=>Sort(3)}>ICU Ventilator Beds</button>
+         <button type="button"  className={`rounded-pill m-1 btn btn-secondary  ${(sort===4)?'selected':''}`}   onClick={()=>Sort(4)}>ICU Non-Ventilator Beds</button>
+        </div>  
+    </div> 
     {(!search)?<center><h5 className="loading">LOADING......</h5><div className="loader"></div></center>:'' }
     {search && (search.length == 0)?<center><h5>No Results Found</h5></center>:''}
     {search && search.slice(0,ListConut).map((e)=>
