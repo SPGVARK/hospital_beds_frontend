@@ -1,6 +1,6 @@
 import React from 'react'
 import logo from '../images/spg-logo.png'
-export default function Hedaer(props){
+export default function Header(props){
     return(
     <section id="header">
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -18,8 +18,11 @@ export default function Hedaer(props){
 
 
           <div className="input-group" style={{textAlign:'center',alignItems:'center'}}>
-            <input type="search" className="form-control" placeholder="Search" aria-label="Search" aria-describedby="search-addon" onInput={props.HandleSearch} style={{outline:'none',border:'0px',background:'#f5f5f5',color:'gray',width:'calc(350px + 0.5vw)'}} />
-            
+            <input className="form-control" id="search" placeholder="Search" onInput={props.HandleSearch} style={{outline:'none',border:'0px',background:'#f5f5f5',color:'gray',width:'calc(350px + 0.5vw)'}} />
+            <button className="btn bg-transparent" style={{marginLeft: '-40px', zIndex: '100'}} onClick={props.ClearSearch}>
+          
+              <i className="fa fa-times"></i>
+            </button>
           </div>
 
         </ul>
